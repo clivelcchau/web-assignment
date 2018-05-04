@@ -1,0 +1,167 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>A-D Base</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="assets/css/css.css"> 
+  </head>
+
+  <script>
+    $(document).ready(function()
+    {      
+      $('#buttonID').click(function() 
+      {
+        alert($('#formID').serialize());
+        $.ajax(
+        {
+          dataType: 'jsonp',
+          jsonpCallback: '_wrapper',
+          data: $('#formID').serialize(),
+          type: 'POST',
+          url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/accsignup",
+          success: handleButtonResponse,
+        });
+      });
+      
+      function handleButtonResponse(data)
+      {
+        alert(data);
+        var jsonObject = JSON.parse(data);
+        $('#reponseID').append( jsonObject.message );
+      }
+      
+      $("#btnSearch").click(function()
+      {
+        var tempSearch;
+        tempSearch = document.forms["search"]["searchkey"].value;
+        if(tempSearch == "")
+        {
+          alert("Please fill the field.");
+        }
+        else
+        {
+          $.ajax(
+          {
+            url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/searching", 
+            type: 'POST',
+            data: $('#formID').serialize(),
+            success: function(resultReturn)
+            { 
+              alert("Related article found.");
+              var _stringObj = JSON.stringify(resultReturn);
+              var stringObj = JSON.parse(resultReturn);
+              for(i = 0; i < stringObj.length; i++)
+              {
+                var num = i + 1;
+                document.getElementsByClassName("tabnum")[i].innerHTML = num;
+                document.getElementsByClassName("tabname")[i].innerHTML = stringObj[i].articletitle;
+                document.getElementsByClassName("tablink")[i].innerHTML = stringObj[i].command;
+              }
+            },error: function (xhr, textStatus, errorThrown) 
+            {
+              alert("search failed");
+              console.log(textStatus);
+              alert(xhr.responseText);
+            }
+          });
+        }
+      });
+    });
+</script>
+
+  <body>
+    <div class="pictMaskB">
+      <br>
+      <a href="/index">
+        <img src="https://i.imgur.com/ZRAymfU.png"/>
+      </a>
+      <br>
+      
+      <div class="type2">
+        <a href="/flistpage">Favourite list</a> <a href="/logout">Log out</a>
+      </div>
+      <br>
+      
+      <div class="type1">
+        <h1>Anti-Drugs Base</h1>
+        Providing information and helps of anti-drugs
+        <br>
+      </div>
+      <br>
+      
+      <div class="type3">
+        <h3>Finding for articles?</h3>
+        <form id="formID" name="search">
+          search here: <input type="text" name="searchkey"/>
+        </form>
+        <button id="btnSearch">search</button>
+        <br>
+        
+        <table id="mytable">
+          <tr>
+            <td class = "tabnum"></td>
+            <td class = "tabname"></td>
+            <td class = "tablink"></td>
+          </tr>
+          <tr>
+            <td class = "tabnum"></td>
+            <td class = "tabname"></td>
+            <td class = "tablink"></td>
+            <td class = "tabdel"></td>
+          </tr>
+        </table>
+        <br>
+        <h3>Article List</h3>
+        <a href="/hkadagainstdrug">Join me in the fight against youth drug abuse</a>
+        <br>
+        <a href="/hkadpublicity">Anit-drug publicity in Hong Kong</a>
+        <br>
+        <a href="/hkadyouthreso">Anit-drug Resources for Youths in Hong Kong</a>
+        <br>
+        <br>
+        <h3>Contact us</h3>
+        <table>
+          <tr>
+            <td>Address: </td>
+            <td>15 Hennessy Road, Wan Chai, HK</td>
+          </tr>
+          <tr>
+            <td>Tel: </td>
+            <td>+852 2574-3300</td>
+          </tr>
+        </table>
+      </div>
+      <br>
+      
+      <div id="googleMap" style="width:100%;height:800px;"></div>
+      <script>
+        function myMap()
+        {
+          myCenter=new google.maps.LatLng(22.277923, 114.169608);
+          var mapOptions=
+              {
+                center:myCenter,
+                zoom:18,
+              };
+          var map=new google.maps.Map(document.getElementById("googleMap"),mapOptions);
+          
+          var marker = new google.maps.Marker(
+            {
+              position: myCenter,
+            });
+          marker.setMap(map);
+        }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCX4P1oBVA5fSSKx4VAWTtnYZUMF0EiFwE&callback=myMap"></script>
+      <br>
+    </div>
+  </body>
+</html>
+
+
+
+

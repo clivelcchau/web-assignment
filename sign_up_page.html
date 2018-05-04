@@ -1,0 +1,111 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>A-D Base - Sign Up</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="assets/css/css.css"> 
+  </head>
+  
+  <script>
+    $(document).ready(function()
+    {
+      $('#buttonID').click(function() 
+      {
+        alert($('#formID').serialize());
+        $.ajax(
+        {
+          dataType: 'jsonp',
+          jsonpCallback: '_wrapper',
+          data: $('#formID').serialize(),
+          type: 'POST',
+          url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/accsignup",
+          success: handleButtonResponse,
+        });
+      });
+      
+      function handleButtonResponse(data)
+      {
+        alert(data);
+        var jsonObject = JSON.parse(data);
+        $('#reponseID').append( jsonObject.message );
+      }
+        
+      $("#buttonme").click(function()
+      {
+        var tempEmail, tempName, tempPassword;
+        tempEmail = document.forms["signin"]["Email"].value;
+        tempName = document.forms["signin"]["Name"].value;
+        tempPassword = document.forms["signin"]["Password"].value;
+        if(tempEmail == ""|| tempName == "" || tempPassword == "")
+        {
+          alert("Please fill all the field.");
+        }
+        else
+        {
+          $.ajax(
+          {
+            url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/accsignup", 
+            type: 'POST',
+            data: $('#formID').serialize(),
+            success: function(result)
+            {
+              alert("Registration success, your email is: " + result.Email + " and username is: " + result.Name + ". Enjoy!");
+              window.location.href = "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/index";
+            },error: function (xhr, textStatus, errorThrown) 
+            {
+              alert("Registration failed, please try again with other username");
+              console.log(textStatus);
+            }
+          });
+        }
+      });
+    });
+  </script>
+  
+  <body>
+    <div class="pictMaskG">
+      <br>
+      <a href="/index">
+        <img src="https://i.imgur.com/ZRAymfU.png"/>
+      </a>
+      <br>
+      
+      <div class="type2">
+        <a href="/page_login">log in</a>  <b>Sign up</b>
+      </div>
+      <br>
+      
+      <div class="type3">
+        <div id="signupform">
+          <form id="formID" name="signin">
+            <table>
+              <tr>
+                <td>Email: </td>
+                <td><input type="text" name="Email"/></td>
+              </tr>
+              <tr>
+                <td>Username: </td>
+                <td><input type="text" name="Name"/></td>
+              </tr>
+              <tr>
+                <td>Password: </td>
+                <td><input type="password" name="Password"></td>
+              </tr>
+            </table>
+          </form>
+          <button id="buttonme">
+            Register 
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+
+
+

@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>A-D Base</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="assets/css/css.css"> 
+  </head>
+  
+  <script>
+    $(document).ready(function()
+    {       
+      $('#buttonID').click(function() 
+      {
+        alert($('#formID').serialize());
+        $.ajax(
+        {
+          dataType: 'jsonp',
+          jsonpCallback: '_wrapper',
+          data: $('#formID').serialize(),
+          type: 'POST',
+          url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/accsignup",
+          success: handleButtonResponse,
+        });
+      });
+      
+      function handleButtonResponse(data)
+      {
+        alert(data);
+        var jsonObject = JSON.parse(data);
+        $('#reponseID').append( jsonObject.message );
+      }
+      
+      $("#btnAddFav").click(function()
+      {
+        var pageKeyword = "personal";
+        $.ajax(
+        {
+          url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/addflist", 
+          type: 'POST',
+          data: $('#formID').serialize(),
+          success: function(result)
+          {
+            alert("Successfully added to favourite list.");
+          },error: function (xhr, textStatus, errorThrown) 
+          {
+            alert("Failed.");
+            console.log(textStatus);
+          }
+        });
+      });
+      
+      $("#btnRemoveFav").click(function()
+      {
+        var pageKeyword = "personal";
+        $.ajax(
+        {
+          url: "http://port-9900.server_side-clivelcchau981118.codeanyapp.com/delflist", 
+          type: 'POST',
+          data: $('#formID').serialize(),
+          success: function(result)
+          {
+            alert("Successfully removed from favourite list.");
+          },error: function (xhr, textStatus, errorThrown) 
+          {
+            alert("Failed.");
+            console.log(textStatus);
+          }
+        });
+      });
+    });    
+  </script>
+  
+  <body>
+    <div class="pictMaskR">
+      <br>
+      <a href="/index">
+        <img src="https://i.imgur.com/ZRAymfU.png"/>
+      </a>
+      <br>
+      
+      <div class="type2">
+        <a href="/flistpage">Favourite list</a> <a href="/logout">Log out</a>
+      </div>
+      <br>
+      
+      <div class="type3">
+        <h2>Anit-drug Resources for Youths in Hong Kong</h2>        
+        <p>Activities organised by the Narcotics Division.</p>
+        <a href="http://www.nd.gov.hk/en/resources_youths.htm">http://www.nd.gov.hk/en/resources_youths.htm</a>
+        <br>
+        
+        <form id="formID" name="fav">
+          <input type="hidden" name="keyword" value="against"/>
+        </form>
+        <button id="btnAddFav">
+          Add favourite
+        </button>
+        <button id="btnRemoveFav">
+          Remove favourite
+        </button>
+        <br>
+        <h2>Articles List</h2>
+        <a href="/hkadagainstdrug">Join me in the fight against youth drug abuse</a>
+        <br>
+        <a href="/hkadpublicity">Anit-drug publicity in Hong Kong</a>
+        <br>
+        <b>Anit-drug Resources for Youths in Hong Kong</b>
+        <br>
+        <br>
+        <a href="/index">Back to frontpage</a>
+      </div>
+    </div>
+  </body>
+</html>
